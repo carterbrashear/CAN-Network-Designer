@@ -152,6 +152,7 @@ classDiagram
     class BusConnection {
         +int64_t device_id
         +int64_t bus_id
+        +int64_t num
     }
 
     class Message {
