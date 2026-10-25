@@ -81,6 +81,9 @@ endif ()
 find_package(SQLite3 QUIET)
 if (SQLite3_FOUND)
     message(STATUS "Found system SQLite3 ${SQLite3_VERSION}")
+    if (TARGET SQLite::SQLite3 AND NOT TARGET SQLite3::SQLite3)
+        add_library(SQLite3::SQLite3 ALIAS SQLite::SQLite3)
+    endif ()
 else ()
     # If SQLite3 system package is not found then download the amalgamation from sqlite.org and extract it
     message(STATUS "System SQLite3 not found. Fetching amalgamation...")
@@ -103,7 +106,7 @@ else ()
                 m
         )
         # Alias so it matches find_package's target name
-        add_library(SQLite::SQLite3 ALIAS sqlite3)
+        add_library(SQLite3::SQLite3 ALIAS sqlite3)
     endif ()
 endif ()
 
@@ -119,5 +122,5 @@ target_link_libraries(CAN-Network-Designer
         glfw
         glad
         imgui
-        SQLite::SQLite3
+        SQLite3::SQLite3
 )
