@@ -100,3 +100,6 @@ nbdist/
 *.swo
 .#*
 \#*#
+
+# Dear ImGui ini file
+imgui.ini
