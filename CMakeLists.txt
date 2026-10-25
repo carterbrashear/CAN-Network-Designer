@@ -15,6 +15,8 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Enable cmake's included fetch content for dependencies on GitHub
 include(FetchContent)
+# Enable CTest
+enable_testing()
 
 # ====================
 # GLFW Dependency
@@ -110,17 +112,44 @@ else ()
     endif ()
 endif ()
 
-add_executable(CAN-Network-Designer
-        src/main.cpp
+# ====================
+# Core App Static Library
+# ====================
+add_library(CAN-Network-Designer-Core STATIC
         src/Application.cpp src/Application.hpp
         src/UserInterface/Window.cpp src/UserInterface/Window.hpp
         src/UserInterface/UserInterface.cpp src/UserInterface/UserInterface.hpp
 )
-
-target_link_libraries(CAN-Network-Designer
-        PRIVATE
+target_include_directories(CAN-Network-Designer-Core PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/external/glad/include>
+)
+target_link_libraries(CAN-Network-Designer-Core
+        PUBLIC
         glfw
         glad
         imgui
         SQLite3::SQLite3
 )
+
+# ====================
+# Main App Executable
+# ====================
+add_executable(CAN-Network-Designer
+        src/main.cpp
+)
+target_link_libraries(CAN-Network-Designer PRIVATE
+    CAN-Network-Designer-Core
+)
+
+# ====================
+# Windowing Subsystem Test
+# ====================
+add_executable(test_window
+        tests/test_window.cpp
+)
+target_link_libraries(test_window PRIVATE
+        CAN-Network-Designer-Core
+)
+add_test(NAME WindowSubsystemTest COMMAND test_window)
+set_tests_properties(WindowSubsystemTest PROPERTIES TIMEOUT 15)
