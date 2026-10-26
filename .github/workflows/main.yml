@@ -29,9 +29,7 @@ jobs:
     - name: Install Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y cmake g++ libgtest-dev libwayland-dev libxkbcommon-dev libx11-dev libxrandr-dev libxcursor-dev libxinerama-dev
-        
-    - name: Configure CMake
+        sudo apt-get install -y cmake g++ libgtest-dev libwayland-dev xorg-dev -y
       run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE= ${{env.BUILD_TYPE}}
 
     - name: Build Tests
