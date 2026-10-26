@@ -123,6 +123,7 @@ add_library(CAN-Network-Designer-Core STATIC
 target_include_directories(CAN-Network-Designer-Core PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/external/glad/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/external/fonts>
 )
 target_link_libraries(CAN-Network-Designer-Core
         PUBLIC

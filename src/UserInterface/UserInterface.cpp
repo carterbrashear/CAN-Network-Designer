@@ -3,6 +3,7 @@
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
+#include <jetbrains_mono.h>
 
 #include "Window.hpp"
 
@@ -12,6 +13,12 @@ void UserInterface::init() const {
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
+    io.Fonts->AddFontFromMemoryCompressedTTF(
+        JetBrainsMono_compressed_data,
+        JetBrainsMono_compressed_size,
+        18.0f
+    );
 
     if constexpr (dark_mode) {
         ImGui::StyleColorsDark();
@@ -27,6 +34,7 @@ void UserInterface::begin() {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
+    ImGui::DockSpaceOverViewport();
 }
 
 void UserInterface::end() const {
@@ -46,6 +54,8 @@ void UserInterface::end() const {
 }
 
 void UserInterface::helloWorldPanel() {
+    ImGui::ShowDemoWindow();
+
     ImGui::Begin("Demo Panel");
     ImGui::Text("Hello World from Dear ImGui!");
     ImGui::Separator();
