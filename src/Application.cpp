@@ -20,6 +20,7 @@ void Application::Run() {
 }
 
 void Application::OnUpdate() {
+    //update elements when data changes in Bus, Nodes, etc. 
 }
 
 void Application::OnRenderScenes() {
