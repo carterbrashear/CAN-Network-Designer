@@ -97,7 +97,7 @@ else ()
     if (NOT TARGET sqlite3)
         add_library(sqlite3 STATIC
                 ${sqlite3_amalgamation_SOURCE_DIR}/sqlite3.c
-         "src/Error/Error.cpp" "src/Error/Error.hpp")
+         "src/Error/Error.cpp" "src/Error/Error.hpp" "external/tinyfiledialogs/tinyfiledialogs.c" "external/tinyfiledialogs/tinyfiledialogs.h")
         target_include_directories(sqlite3 PUBLIC
                 $<BUILD_INTERFACE:${sqlite3_amalgamation_SOURCE_DIR}>
         )
