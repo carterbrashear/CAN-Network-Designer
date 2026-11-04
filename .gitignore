@@ -103,3 +103,4 @@ nbdist/
 
 # Dear ImGui ini file
 imgui.ini
+/CMakeSettings.json
