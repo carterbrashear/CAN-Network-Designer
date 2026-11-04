@@ -1,17 +1,16 @@
 #ifndef ERROR_HPP
 #define ERROR_HPP
 #include <string>
-using namespace std;
 class Error {
 private:
 	int code;
-	string ID;
-	string message;
+	std::string ID;
+	std::string message;
 public:
 	Error();
-	Error(string id, int c, string m);
+	Error(std::string id, int c, std::string m);
 	Error(const Error& rhs);
-	string GetError();
+	std::string GetError();
 	int GetSeverity();
 };
 

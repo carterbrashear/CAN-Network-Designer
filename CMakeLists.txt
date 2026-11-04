@@ -40,7 +40,7 @@ endif ()
 # ====================
 add_library(glad STATIC
         external/glad/src/glad.c
- "src/Error/Error.cpp" "src/Error/Error.hpp" "external/tinyfiledialogs/tinyfiledialogs.c" "external/tinyfiledialogs/tinyfiledialogs.h")
+)
 target_include_directories(glad PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/external/glad/include>
 )
@@ -66,7 +66,7 @@ if (NOT TARGET imgui)
             ${imgui_SOURCE_DIR}/imgui_demo.cpp
             ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
             ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
-     "src/Error/Error.cpp" "src/Error/Error.hpp" "external/tinyfiledialogs/tinyfiledialogs.c" "external/tinyfiledialogs/tinyfiledialogs.h")
+    )
     target_include_directories(imgui PUBLIC
             $<BUILD_INTERFACE:${imgui_SOURCE_DIR}>
             $<BUILD_INTERFACE:${imgui_SOURCE_DIR}/backends>
@@ -131,7 +131,11 @@ add_library(CAN-Network-Designer-Core STATIC
         src/Application.cpp src/Application.hpp
         src/UserInterface/Window.cpp src/UserInterface/Window.hpp
         src/UserInterface/UserInterface.cpp src/UserInterface/UserInterface.hpp
- "src/Error/Error.cpp" "src/Error/Error.hpp" "external/tinyfiledialogs/tinyfiledialogs.c" "external/tinyfiledialogs/tinyfiledialogs.h")
+        src/Project/DemoFileOpener.cpp
+        src/Project/DemoFileOpener.hpp
+        src/Error/Error.cpp
+        src/Error/Error.hpp
+ )
 target_include_directories(CAN-Network-Designer-Core PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/external/glad/include>
@@ -152,7 +156,7 @@ target_link_libraries(CAN-Network-Designer-Core
 # ====================
 add_executable(CAN-Network-Designer
         src/main.cpp
- "src/Error/Error.cpp" "src/Error/Error.hpp" "external/tinyfiledialogs/tinyfiledialogs.c" "external/tinyfiledialogs/tinyfiledialogs.h")
+)
 target_link_libraries(CAN-Network-Designer PRIVATE
     CAN-Network-Designer-Core
 )
@@ -162,7 +166,7 @@ target_link_libraries(CAN-Network-Designer PRIVATE
 # ====================
 add_executable(test_window
         tests/test_window.cpp
- "src/Error/Error.cpp" "src/Error/Error.hpp" "external/tinyfiledialogs/tinyfiledialogs.c" "external/tinyfiledialogs/tinyfiledialogs.h")
+)
 target_link_libraries(test_window PRIVATE
         CAN-Network-Designer-Core
 )
@@ -174,7 +178,7 @@ set_tests_properties(WindowSubsystemTest PROPERTIES TIMEOUT 15)
 # ====================
 add_executable(test_error
     tests/test_error.cpp
- "src/Error/Error.cpp" "src/Error/Error.hpp" "external/tinyfiledialogs/tinyfiledialogs.c" "external/tinyfiledialogs/tinyfiledialogs.h")
+)
 
 target_link_libraries(test_error PRIVATE CAN-Network-Designer-Core)
 

@@ -60,8 +60,31 @@ void UserInterface::helloWorldPanel() {
     ImGui::Text("Hello World from Dear ImGui!");
     ImGui::Separator();
     ImGui::Text("GLAD & OpenGL Version: %s", glGetString(GL_VERSION));
+    
     ImGui::End();
-}
+
+    //Added for Demo
+    // Database file selector panel
+    ImGui::SetNextWindowSize(ImVec2(450, 200), ImGuiCond_FirstUseEver);
+
+    ImGui::Begin("Database File Selector");
+
+    if (ImGui::Button("Open Database File")) {
+        selectedDBPath = getDBFilePath();
+    }
+
+    ImGui::Separator();
+
+    if (selectedDBPath.has_value()) {
+        ImGui::Text("Selected Database:");
+        ImGui::TextWrapped("%s", selectedDBPath->string().c_str());
+    }
+    else {
+        ImGui::Text("No database file selected.");
+    }
+
+    ImGui::End();
+} 
 
 UserInterface::~UserInterface() {
     ImGui_ImplOpenGL3_Shutdown();

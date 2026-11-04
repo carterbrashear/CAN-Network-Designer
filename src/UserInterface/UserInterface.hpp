@@ -1,9 +1,17 @@
 #pragma once
 #include "Window.hpp"
+//added for demo
+#include <optional>
+#include <filesystem>
+#include <string>
+#include "../Project/DemoFileOpener.hpp"
+namespace fs = std::filesystem;
 
 class UserInterface {
     static constexpr bool dark_mode = true;
     Window& window;
+    //added for demo
+    std::optional<fs::path> selectedDBPath;
 
 public:
     explicit UserInterface(Window& win) : window(win) {}
@@ -12,8 +20,8 @@ public:
 
     static void begin();
     void end() const;
-
-    static void helloWorldPanel();
+    //changed from static for demo
+    void helloWorldPanel();
 
     ~UserInterface();
 };
