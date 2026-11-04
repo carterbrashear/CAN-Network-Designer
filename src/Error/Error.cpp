@@ -1,4 +1,5 @@
 #include "Error.hpp"
+using namespace std;
 Error::Error() {
 	ID = "UK";
 	code = 500;
