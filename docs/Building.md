@@ -28,7 +28,8 @@ sudo apt update && sudo apt install -y \
     libwayland-bin \
     libxkbcommon-dev \
     libsqlite3-dev \
-    libglfw3-dev
+    libglfw3-dev \
+    libosmesa6-dev
 ```
 ### Fedora, RHEL, and AlmaLinux
 ```shell
