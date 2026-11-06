@@ -27,7 +27,7 @@ void Application::OnRenderScenes() {
 }
 
 void Application::OnRenderUI() {
-    ui.helloWorldPanel();
+    ui.homePanel();
 }
 
 Application::Application() : ui(main_window) {}

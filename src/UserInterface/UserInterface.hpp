@@ -20,8 +20,8 @@ public:
 
     static void begin();
     void end() const;
-    //changed from static for demo
-    void helloWorldPanel();
+    //changed from static for demo, will be used as the home panel created upon startup later
+    void homePanel();
 
     ~UserInterface();
 };
