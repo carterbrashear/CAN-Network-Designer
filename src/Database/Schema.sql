@@ -35,7 +35,7 @@ CREATE TABLE bus_connections
 (
     device_id INTEGER NOT NULL REFERENCES devices (id) ON DELETE CASCADE,
     bus_id    INTEGER NOT NULL REFERENCES buses (id) ON DELETE CASCADE,
-    num       INTEGER NOT NULL AUTOINCRAMENT
+    num       INTEGER NOT NULL AUTOINCREMENT
 
     PRIMARY KEY (device_id, bus_id, num)
 );
