@@ -58,13 +58,6 @@ void UserInterface::end() const {
 
 bool UserInterface::homePanel() {
     ImGuiIO& io = ImGui::GetIO();
-    //demo panel
-    //ImGui::ShowDemoWindow();
-    //ImGui::Begin("Demo Panel");
-    //ImGui::Text("Hello World from Dear ImGui!");
-    //ImGui::Separator();
-    //ImGui::Text("GLAD & OpenGL Version: %s", glGetString(GL_VERSION));
-    //ImGui::End();
     
     ImGui::Begin("Program Title/ homepage");
 
@@ -74,9 +67,14 @@ bool UserInterface::homePanel() {
 
     //draws title rectangle
     ImVec2 boxSize= ImVec2(150.0f, 50.0f);
-    ImGui::SetCursorPos(ImVec2((io.DisplaySize.x*3)/4, io.DisplaySize.y/2));
+
+    ImVec2 dockedWindowSize= ImGui::GetContentRegionAvail();
+    ImVec2 titleLocalPos= ImVec2((dockedWindowSize.x*3)/4, dockedWindowSize.y/2);
+    ImGui::SetCursorPos(titleLocalPos);
+
     ImVec2 pMin= ImGui::GetCursorScreenPos();
     ImVec2 pMax= ImVec2(pMin.x + boxSize.x, pMin.y + boxSize.y);
+
     draw_list->AddRectFilled(pMin, pMax, fillColor, 4.0f);
     draw_list->AddRect(pMin, pMax, boxColor, 4.0f, 0, 2.0f);
     ImGui::Dummy(boxSize);
@@ -84,24 +82,29 @@ bool UserInterface::homePanel() {
     //set text inside box
     string title= "CAN Designer";
     ImVec2 textSize= ImGui::CalcTextSize(title.c_str());
-    ImGui::SetCursorPos(ImVec2((pMin.x + (pMax.x - textSize.x))/2, (pMin.y + (pMax.y - textSize.y))/2));
-    ImGui::Text("%s", title.c_str());
-
-    ImGui::SameLine();
+    
+    ImGui::SetCursorPos(ImVec2(titleLocalPos.x + (boxSize.x - textSize.x)/2, titleLocalPos.y + (boxSize.y - textSize.y)/2));
+    ImGui::PushItemWidth(dockedWindowSize.x);
+    ImGui::TextWrapped("%s", title.c_str());
+    ImGui::PopItemWidth();
 
     //Added for Demo
     // Database file selector panel
     ImGui::SetNextWindowSize(ImVec2(1050, 200), ImGuiCond_FirstUseEver);
 
     //ImGui::Begin("Database File Selector");
+<<<<<<< Updated upstream
     ImGui::SetCursorPos(ImVec2(io.DisplaySize.x/6, io.DisplaySize.y/4));
     ImGui::BeginDisabled(fileOpened);
+=======
+    ImGui::SetCursorPos(ImVec2(dockedWindowSize.x/6, dockedWindowSize.y/4));
+>>>>>>> Stashed changes
     if (ImGui::Button("Open Database File")) {
         selectedDBPath = getDBFilePath();
     }
     ImGui::EndDisabled();
 
-    ImGui::SetCursorPos(ImVec2(pMax.x/6 + 50.0f, (io.DisplaySize.y/4) + 40.0f));
+    ImGui::SetCursorPos(ImVec2(dockedWindowSize.x/6 + 50.0f, (dockedWindowSize.y/4) + 40.0f));
     if (selectedDBPath.has_value()&& selectedDBPath->extension()==".db") {//checks for if the path exists and has the extension ".db"
         fileOpened = true;
         ImGui::Text("Selected Database:");
@@ -111,7 +114,7 @@ bool UserInterface::homePanel() {
         int test;
         for(int i=0; i<5; i++){
             //device specifications list, for demo
-            ImGui:: SetCursorPos(ImVec2(io.DisplaySize.x/6, io.DisplaySize.y/2 + (i*40)));
+            ImGui:: SetCursorPos(ImVec2(dockedWindowSize.x/6, dockedWindowSize.y/2 + (i*40)));
             //test for device specs, replace values with ones from db
             switch(i){
                 case 0:
