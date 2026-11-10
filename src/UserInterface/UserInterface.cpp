@@ -137,6 +137,10 @@ bool UserInterface::homePanel() {
             ImGui::Text("%s %d", spec.c_str(), test);
         }
     }
+    else if (selectedDBPath.has_value() && selectedDBPath->extension() != ".db") {
+        ImGui::Text("No database file selected.");
+        DrawErrorPopup("101", "Incorrect File Type Selected");
+    }
     else {
         ImGui::Text("No database file selected.");
     }
@@ -144,6 +148,26 @@ bool UserInterface::homePanel() {
     ImGui::End();
     return true;
 } 
+
+void UserInterface::DrawErrorPopup(string popup_id, string error_message)
+{
+    ImGui::OpenPopup(popup_id.c_str());
+    ImGui::SetNextWindowSize(ImVec2(300, 0));
+    if (ImGui::BeginPopupModal(popup_id.c_str(), NULL, ImGuiWindowFlags_AlwaysAutoResize))
+    {
+        ImGui::TextWrapped("%s", error_message.c_str());
+        ImGui::Separator();
+        ImGui::SetCursorPosX(ImGui::GetWindowSize().x - 85);
+        if (ImGui::Button("OK", ImVec2(75, 0)))
+        {
+            ImGui::CloseCurrentPopup();
+            //should be removed for general use later
+            selectedDBPath = nullopt;
+        }
+
+        ImGui::EndPopup();
+    }
+}
 
 void UserInterface::toolbar(){}
 

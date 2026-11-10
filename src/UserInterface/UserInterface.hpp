@@ -24,6 +24,8 @@ public:
     //changed from static for demo, will be used as the home panel created upon startup later
     bool homePanel();
 
+    void DrawErrorPopup(string popup_id, string error_message);
+
     void toolbar();
 
     void workspace();
