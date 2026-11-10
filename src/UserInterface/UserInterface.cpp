@@ -7,6 +7,9 @@
 
 #include "Window.hpp"
 
+//flag to disable docking, can be applied to any window
+ImGuiWindowFlags dockFlag= ImGuiWindowFlags_NoDocking;
+
 void UserInterface::init() const {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -53,7 +56,8 @@ void UserInterface::end() const {
     }
 }
 
-void UserInterface::homePanel() {
+bool UserInterface::homePanel() {
+    ImGuiIO& io = ImGui::GetIO();
     //demo panel
     //ImGui::ShowDemoWindow();
     //ImGui::Begin("Demo Panel");
@@ -61,26 +65,27 @@ void UserInterface::homePanel() {
     //ImGui::Separator();
     //ImGui::Text("GLAD & OpenGL Version: %s", glGetString(GL_VERSION));
     //ImGui::End();
-    ImGuiIO& io = ImGui::GetIO();
-    ImGui::Begin("Program Title/ homepage");
     
-    ImVec2 boxSize= ImVec2(300.0f, 50.0f);
-    ImGui::Dummy(boxSize);
-
-    ImVec2 pMin= ImGui::GetItemRectMin();
-    ImVec2 pMax= ImGui::GetItemRectMax();
+    ImGui::Begin("Program Title/ homepage");
 
     ImDrawList* draw_list= ImGui::GetWindowDrawList();
     ImU32 boxColor= IM_COL32(255,255,255,255);
     ImU32 fillColor= IM_COL32(100,100,100,255);
 
-    //draws rectangles
+    //draws title rectangle
+    ImVec2 boxSize= ImVec2(150.0f, 50.0f);
+    ImGui::SetCursorPos(ImVec2((io.DisplaySize.x*3)/4, io.DisplaySize.y/2));
+    ImVec2 pMin= ImGui::GetCursorScreenPos();
+    ImVec2 pMax= ImVec2(pMin.x + boxSize.x, pMin.y + boxSize.y);
     draw_list->AddRectFilled(pMin, pMax, fillColor, 4.0f);
     draw_list->AddRect(pMin, pMax, boxColor, 4.0f, 0, 2.0f);
+    ImGui::Dummy(boxSize);
 
     //set text inside box
-    ImGui::SetCursorPos(ImVec2(pMin.x + 10.0f, pMin.y + 10.0f));
-    ImGui::Text("CAN Network Designer");
+    string title= "CAN Designer";
+    ImVec2 textSize= ImGui::CalcTextSize(title.c_str());
+    ImGui::SetCursorPos(ImVec2((pMin.x + (pMax.x - textSize.x))/2, (pMin.y + (pMax.y - textSize.y))/2));
+    ImGui::Text("%s", title.c_str());
 
     ImGui::SameLine();
 
@@ -89,57 +94,67 @@ void UserInterface::homePanel() {
     ImGui::SetNextWindowSize(ImVec2(1050, 200), ImGuiCond_FirstUseEver);
 
     //ImGui::Begin("Database File Selector");
-    ImGui::SetCursorPos(ImVec2(pMax.x + 50.0f, pMin.y + 30.0f));
+    ImGui::SetCursorPos(ImVec2(io.DisplaySize.x/6, io.DisplaySize.y/4));
     if (ImGui::Button("Open Database File")) {
         selectedDBPath = getDBFilePath();
     }
 
-    ImGui::Separator();
-
-    ImGui::SetCursorPos(ImVec2(pMax.x + 50.0f, pMin.y + 60.0f));
-    if (selectedDBPath.has_value()) {
+    ImGui::SetCursorPos(ImVec2(pMax.x/6 + 50.0f, (io.DisplaySize.y/4) + 40.0f));
+    if (selectedDBPath.has_value()&& selectedDBPath->extension()==".db") {//checks for if the path exists and has the extension ".db"
         ImGui::Text("Selected Database:");
         ImGui::TextWrapped("%s", selectedDBPath->string().c_str());
+        //Displays specs when dbpath is selected
+        string spec;
+        int test;
+        for(int i=0; i<5; i++){
+            //device specifications list, for demo
+            ImGui:: SetCursorPos(ImVec2(io.DisplaySize.x/6, io.DisplaySize.y/2 + (i*40)));
+            //test for device specs, replace values with ones from db
+            switch(i){
+                case 0:
+                    spec= "Device ID:";
+                    test= 0;
+                    break;
+                case 1:
+                    spec= "Device Name";
+                    test= 1;
+                    break;
+                case 2:
+                    spec= "Position: ";
+                    test= 2;
+                    break;
+                case 3:
+                    spec= "Comment: ";
+                    test= 3;
+                    break;
+                case 4:
+                    spec= "Connected Bus IDs: ";
+                    test= 4;
+                    break;
+            }
+            ImGui::Text("%s %d", spec.c_str(), test);
+        }
     }
     else {
         ImGui::Text("No database file selected.");
     }
 
-    ImGui::Separator();
-    string spec;
-    int test;
-    for(int i=0; i<5; i++){
-        //device specifications list, for demo
-        ImGui:: SetCursorPos(ImVec2(io.DisplaySize.x/2 - 100, io.DisplaySize.y/2 + i*30));
-        //test for device specs, replace values with ones from db
-        switch(i){
-            case 0:
-                spec= "Device ID:";
-                test= 0;
-                break;
-            case 1:
-                spec= "Device Name";
-                test= 1;
-                break;
-            case 2:
-                spec= "Position: ";
-                test= 2;
-                break;
-            case 3:
-                spec= "Comment: ";
-                test= 3;
-                break;
-            case 4:
-                spec= "Connected Bus IDs: ";
-                test= 4;
-                break;
-        }
-        ImGui::Text("%s %d", spec.c_str(), test);
-        ImGui::Separator();
-    }
+    ImGui::End();
+    return true;
+} 
+
+void UserInterface::toolbar(){}
+
+void UserInterface::workspace(){
+    ImGui::Begin("Workspace");
 
     ImGui::End();
-} 
+}
+
+//no implementation of movable devices yet
+void UserInterface::deviceUI(){
+
+}
 
 UserInterface::~UserInterface() {
     ImGui_ImplOpenGL3_Shutdown();

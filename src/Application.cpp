@@ -27,7 +27,11 @@ void Application::OnRenderScenes() {
 }
 
 void Application::OnRenderUI() {
-    ui.homePanel();
+    bool show_home_panel = ui.homePanel();
+    if (!show_home_panel) {
+        ui.workspace();
+    }
+    
 }
 
 Application::Application() : ui(main_window) {}
