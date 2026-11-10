@@ -93,12 +93,8 @@ bool UserInterface::homePanel() {
     ImGui::SetNextWindowSize(ImVec2(1050, 200), ImGuiCond_FirstUseEver);
 
     //ImGui::Begin("Database File Selector");
-<<<<<<< Updated upstream
-    ImGui::SetCursorPos(ImVec2(io.DisplaySize.x/6, io.DisplaySize.y/4));
-    ImGui::BeginDisabled(fileOpened);
-=======
     ImGui::SetCursorPos(ImVec2(dockedWindowSize.x/6, dockedWindowSize.y/4));
->>>>>>> Stashed changes
+    ImGui::BeginDisabled(fileOpened);
     if (ImGui::Button("Open Database File")) {
         selectedDBPath = getDBFilePath();
     }
