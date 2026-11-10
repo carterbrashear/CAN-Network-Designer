@@ -95,14 +95,17 @@ bool UserInterface::homePanel() {
 
     //ImGui::Begin("Database File Selector");
     ImGui::SetCursorPos(ImVec2(io.DisplaySize.x/6, io.DisplaySize.y/4));
+    ImGui::BeginDisabled(fileOpened);
     if (ImGui::Button("Open Database File")) {
         selectedDBPath = getDBFilePath();
     }
+    ImGui::EndDisabled();
 
     ImGui::SetCursorPos(ImVec2(pMax.x/6 + 50.0f, (io.DisplaySize.y/4) + 40.0f));
     if (selectedDBPath.has_value()&& selectedDBPath->extension()==".db") {//checks for if the path exists and has the extension ".db"
+        fileOpened = true;
         ImGui::Text("Selected Database:");
-        ImGui::TextWrapped("%s", selectedDBPath->string().c_str());
+        ImGui::TextWrapped("%s", selectedDBPath->filename().string().c_str());
         //Displays specs when dbpath is selected
         string spec;
         int test;

@@ -12,6 +12,7 @@ class UserInterface {
     Window& window;
     //added for demo
     std::optional<fs::path> selectedDBPath;
+    bool fileOpened = false;
 
 public:
     explicit UserInterface(Window& win) : window(win) {}
