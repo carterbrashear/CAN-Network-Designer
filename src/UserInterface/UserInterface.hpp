@@ -4,7 +4,9 @@
 #include <optional>
 #include <filesystem>
 #include <string>
+#include <vector>
 #include "../Project/DemoFileOpener.hpp"
+#include "../Database/DatabaseManager.hpp"
 namespace fs = std::filesystem;
 
 class UserInterface {
@@ -13,6 +15,16 @@ class UserInterface {
     //added for demo
     std::optional<fs::path> selectedDBPath;
     bool fileOpened = false;
+
+    DatabaseManager db_manager;
+    std::string loaded_db_path;
+    std::vector<Device> cached_devices;
+    std::vector<Bus> cached_buses;
+    std::vector<MessageInfo> cached_messages;
+    std::vector<SignalInfo> cached_signals;
+    int selected_device_idx = 0;
+
+    void renderDatabaseInspector();
 
 public:
     explicit UserInterface(Window& win) : window(win) {}
