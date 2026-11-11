@@ -7,6 +7,7 @@
 #include <vector>
 #include "../Project/DemoFileOpener.hpp"
 #include "../Database/DatabaseManager.hpp"
+#include "../Error/Error.hpp"
 namespace fs = std::filesystem;
 
 class UserInterface {
@@ -15,6 +16,8 @@ class UserInterface {
     //added for demo
     std::optional<fs::path> selectedDBPath;
     bool fileOpened = false;
+    bool validFile = false;
+    Error current_error;
 
     DatabaseManager db_manager;
     std::string loaded_db_path;
