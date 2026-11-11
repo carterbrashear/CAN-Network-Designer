@@ -1,5 +1,6 @@
 #include<string>
 #include<vector>
+#include <cstdint>
 
 using namespace std;
 class Bus{
@@ -8,7 +9,7 @@ public:
     string name;
     int32_t nominal_bit_rate;
     bool is_fd;
-    u_int32_t color;
+    uint32_t color;
     string comment;
 
     //public function to calculate load on bus. NOTE: Requires message class.
