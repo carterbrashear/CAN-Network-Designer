@@ -12,6 +12,11 @@ public:
 	Error(const Error& rhs);
 	std::string GetError();
 	int GetSeverity();
+	void setCode(int c);
+	std::string getCodeID();
+	void setID(std::string s);
+	void setMessage(std::string m);
+	std::string getMessage();
 };
 
 #endif

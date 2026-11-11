@@ -96,6 +96,11 @@ bool UserInterface::homePanel() {
     ImGui::BeginDisabled(fileOpened);
     if (ImGui::Button("Open Database File")) {
         selectedDBPath = getDBFilePath();
+        validFile = !selectedPathVaild(selectedDBPath, current_error);
+        if (!validFile) {
+            selectedDBPath = nullopt;
+            ImGui::OpenPopup(current_error.getCodeID().c_str());
+        }
     }
     ImGui::EndDisabled();
 
@@ -104,18 +109,19 @@ bool UserInterface::homePanel() {
         if (ImGui::Button("Close Database")) {
             db_manager.closeDatabase();
             fileOpened = false;
-            selectedDBPath = std::nullopt;
+            selectedDBPath = nullopt;
             loaded_db_path.clear();
             cached_devices.clear();
             cached_buses.clear();
             cached_messages.clear();
             cached_signals.clear();
             selected_device_idx = 0;
+            validFile = false;
         }
     }
 
     ImGui::SetCursorPos(ImVec2(dockedWindowSize.x/6 + 50.0f, (dockedWindowSize.y/4) + 40.0f));
-    if (selectedDBPath.has_value() && selectedDBPath->extension() == ".db") {
+    if (validFile) {
         // Load database if newly selected
         if (selectedDBPath->string() != loaded_db_path) {
             NetworkProject dummy_project;
@@ -128,8 +134,10 @@ bool UserInterface::homePanel() {
                 cached_signals = db_manager.getSignals();
                 selected_device_idx = 0;
             } else {
-                DrawErrorPopup("DB_ERR", db_manager.getLastError().GetError());
+                current_error = db_manager.getLastError();
+                ImGui::OpenPopup(current_error.getCodeID().c_str());
                 selectedDBPath = std::nullopt;
+                validFile = false;
                 fileOpened = false;
             }
         }
@@ -197,14 +205,10 @@ bool UserInterface::homePanel() {
             }
         }
     }
-    else if (selectedDBPath.has_value() && selectedDBPath->extension() != ".db") {
-        ImGui::Text("No database file selected.");
-        DrawErrorPopup("101", "Incorrect File Type Selected");
-    }
     else {
         ImGui::Text("No database file selected.");
     }
-
+    DrawErrorPopup(current_error.getCodeID(), current_error.getMessage());
     ImGui::End();
 
     if (fileOpened) {
@@ -397,22 +401,15 @@ void UserInterface::renderDatabaseInspector() {
     ImGui::End();
 }
 
-void UserInterface::DrawErrorPopup(string popup_id, string error_message)
-{
-    ImGui::OpenPopup(popup_id.c_str());
+void UserInterface::DrawErrorPopup(string popup_id, string error_message) {
     ImGui::SetNextWindowSize(ImVec2(300, 0));
-    if (ImGui::BeginPopupModal(popup_id.c_str(), NULL, ImGuiWindowFlags_AlwaysAutoResize))
-    {
+    if (ImGui::BeginPopupModal(popup_id.c_str(), NULL, ImGuiWindowFlags_AlwaysAutoResize)) {
         ImGui::TextWrapped("%s", error_message.c_str());
         ImGui::Separator();
         ImGui::SetCursorPosX(ImGui::GetWindowSize().x - 85);
-        if (ImGui::Button("OK", ImVec2(75, 0)))
-        {
+        if (ImGui::Button("OK", ImVec2(75, 0))) {
             ImGui::CloseCurrentPopup();
-            //should be removed for general use later
-            selectedDBPath = nullopt;
         }
-
         ImGui::EndPopup();
     }
 }
