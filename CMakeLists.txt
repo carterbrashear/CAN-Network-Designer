@@ -128,13 +128,21 @@ target_include_directories(tinyfiledialogs PUBLIC
 # Core App Static Library
 # ====================
 add_library(CAN-Network-Designer-Core STATIC
+        # Core components
         src/Application.cpp src/Application.hpp
+        src/Project/DemoFileOpener.cpp  src/Project/DemoFileOpener.hpp
+        src/Error/Error.cpp src/Error/Error.hpp
+        # UI related
         src/UserInterface/Window.cpp src/UserInterface/Window.hpp
         src/UserInterface/UserInterface.cpp src/UserInterface/UserInterface.hpp
-        src/Project/DemoFileOpener.cpp
-        src/Project/DemoFileOpener.hpp
-        src/Error/Error.cpp
-        src/Error/Error.hpp
+        # Database related
+        src/Database/Database.cpp src/Database/Database.hpp
+        src/Database/DatabaseManager.cpp src/Database/DatabaseManager.hpp
+        # Entity components
+        src/Project/Bus.cpp src/Project/Bus.hpp
+        src/Project/Device.cpp src/Project/Device.hpp
+        src/Project/Message.cpp src/Project/Message.hpp
+        src/Project/NetworkProject.cpp src/Project/NetworkProject.hpp
  )
 target_include_directories(CAN-Network-Designer-Core PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
