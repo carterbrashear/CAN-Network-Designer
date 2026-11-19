@@ -56,11 +56,33 @@ void UserInterface::end() const {
     }
 }
 
-bool UserInterface::homePanel() {
+void UserInterface::homePanel() {
     ImGuiIO& io = ImGui::GetIO();
     
-    ImGui::Begin("Program Title/ homepage");
+    ImGuiViewport* viewport= ImGui::GetMainViewport();
+    //menu bar for file, options, and view tabs
+    if(ImGui::BeginMainMenuBar()){
+        if(ImGui::BeginMenu("File")){
+            if (ImGui::MenuItem("Load Project")){
+                //move file selection logic here
+            }
+            if (ImGui:: MenuItem("Save As")){
+                //move file selection logic here, allow saving a project for other CAN compatible filetypes
+            }
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("Options")){
+            ImGui::EndMenu();
+        }
+        
+        if (ImGui::BeginMenu("View")){
+            //can be used to view the database tables
+            ImGui::EndMenu();
+        }
+        ImGui::EndMainMenuBar();
+    }
 
+    ImGui::Begin("Program Workspace");
     ImDrawList* draw_list= ImGui::GetWindowDrawList();
     ImU32 boxColor= IM_COL32(255,255,255,255);
     ImU32 fillColor= IM_COL32(100,100,100,255);
@@ -214,8 +236,6 @@ bool UserInterface::homePanel() {
     if (fileOpened) {
         renderDatabaseInspector();
     }
-
-    return true;
 } 
 
 void UserInterface::renderDatabaseInspector() {
@@ -412,14 +432,6 @@ void UserInterface::DrawErrorPopup(string popup_id, string error_message) {
         }
         ImGui::EndPopup();
     }
-}
-
-void UserInterface::toolbar(){}
-
-void UserInterface::workspace(){
-    ImGui::Begin("Workspace");
-
-    ImGui::End();
 }
 
 //no implementation of movable devices yet
