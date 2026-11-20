@@ -1,6 +1,7 @@
 #include "UserInterface.hpp"
 
 #include <imgui.h>
+#include <imgui_internal.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
 #include <jetbrains_mono.h>
@@ -58,7 +59,7 @@ void UserInterface::end() const {
 
 void UserInterface::homePanel() {
     ImGuiIO& io = ImGui::GetIO();
-    
+
     ImGuiViewport* viewport= ImGui::GetMainViewport();
     //menu bar for file, options, and view tabs
     if(ImGui::BeginMainMenuBar()){
@@ -81,6 +82,47 @@ void UserInterface::homePanel() {
         }
         ImGui::EndMainMenuBar();
     }
+
+    //canvas parent window, constrains canvas window to a specific region of the program's area
+    ImGuiWindowFlags canvasParentWFlags=ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground | ImGuiDockNodeFlags_NoDocking;
+
+    //canvas window, cannot be moved, set as a specific size 
+    ImGuiWindowFlags canvasWindowFlags= canvasParentWFlags | ImGuiWindowFlags_MenuBar;
+    if(ImGui::Begin("Canvas editor", nullptr, canvasWindowFlags)){
+        //can be used to render elements in 
+        ImVec2 canvasWindDim= ImGui::GetContentRegionAvail();
+
+        //white canvas space in canvas window
+        ImVec2 canvWindowPos = ImGui::GetWindowPos();
+        ImVec2 canvWindowSize = ImGui::GetWindowSize();
+        ImVec2 rectMax = ImVec2(canvWindowPos.x + canvWindowSize.x, canvWindowPos.y + canvWindowSize.y);
+        ImGui::GetWindowDrawList()->AddRectFilled(canvWindowPos, rectMax, IM_COL32(255,255,255,255));
+
+        if(ImGui::BeginMenuBar()){
+            if(ImGui::BeginMenu("Devices")){
+                //device panel, uses DeviceInspectorPanel object
+                ImGui::EndMenu();
+            }
+
+            if(ImGui::BeginMenu("Signals")){
+                //signal panel, uses SignalInspectorPanel
+                ImGui::EndMenu();
+            }
+
+            if(ImGui::BeginMenu("Messages")){
+                //message table panel, uses MessageTablePanel object
+                ImGui::EndMenu();
+            }
+
+            if(ImGui::BeginMenu("Bus Configuration")){
+                //bus config panel, uses BusConfigPanel object
+                ImGui::EndMenu();
+            }
+  
+            ImGui::EndMenuBar();
+        }
+    }
+    ImGui::End();
 
     ImGui::Begin("Program Workspace");
     ImDrawList* draw_list= ImGui::GetWindowDrawList();
